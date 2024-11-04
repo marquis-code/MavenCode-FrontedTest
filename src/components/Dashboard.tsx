@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDashboardData } from "../store/dashboardSlice";
 import Header from "./Header";
 import Navigation from "./Navigation";
+import DocumentationCard from "./DocumentationCard";
 import { RootState } from "../store/store";
 import {
   LineChart,
@@ -12,6 +13,27 @@ import {
   Pie,
   Cell,
 } from "recharts";
+
+const hardcodedDonutData = [
+  { name: "Segment 1", value: 37 },
+  { name: "Segment 2", value: 63 },
+];
+
+const hardcodedPieData = [
+  { name: "Segment 1", value: 47.4 },
+  { name: "Segment 2", value: 33.1 },
+  { name: "Segment 3", value: 10.9 },
+  { name: "Segment 4", value: 9.0 },
+];
+
+const hardcodedLineData = [
+  { name: "Jan", value: 10 },
+  { name: "Feb", value: 15 },
+  { name: "Mar", value: 12 },
+  { name: "Apr", value: 25 },
+  { name: "May", value: 20 },
+  { name: "Jun", value: 30 },
+];
 
 const DONUT_COLORS = ["#4CAF50", "#E8F5E9"];
 const PIE_COLORS = ["#1E40AF", "#3B82F6", "#93C5FD", "#DBEAFE"];
@@ -59,7 +81,7 @@ const Dashboard = () => {
       <Header />
       <Navigation />
 
-      <main className="p-6">
+      <main className="p-6 bg-[#f4f6f8]">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-6">
           {stats.map((stat, index) => (
             <StatsCard
@@ -78,17 +100,16 @@ const Dashboard = () => {
               <h3 className="text-lg px-6 py-4 font-semibold text-gray-700 mb-4 border-b border-gray-400">
                 Development Activity
               </h3>
-              <ResponsiveContainer width="100%" height={200}>
-                <LineChart data={tableData}>
-                  <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#3B82F6"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={hardcodedLineData}>
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#3B82F6"
+                  strokeWidth={2}
+                />
+              </LineChart>
+            </ResponsiveContainer>
             </div>
 
             <div className="bg-white p-6 ">
@@ -146,36 +167,120 @@ const Dashboard = () => {
             </div>
           </section>
 
-          <section className="grid grid-cols-2 gap-6">
+       <section className="space-y-6">
+         <DocumentationCard />
+          <div className="grid lg:grid-cols-2 gap-6">
             <div className="rounded-lg bg-white shadow-sm">
               <h3 className="text- font-semibold text-gray-700 px-6 py-4 mb-4 border-b border-gray-400">
+               Chart title
+              </h3>
+              <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={hardcodedDonutData}
+                  innerRadius="60%"
+                  outerRadius="80%"
+                  dataKey="value"
+                  label={({ percent }) => `${(percent * 100).toFixed(1)}%`}
+                >
+                  {hardcodedDonutData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={DONUT_COLORS[index % DONUT_COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+            </div>
+
+            <div className="rounded-lg bg-white shadow-sm">
+              <h3 className="text- font-semibold text-gray-700 px-6 py-4 mb-4 border-b border-gray-400">
+              Chart title
+              </h3>
+              <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={hardcodedPieData}
+                  outerRadius="80%"
+                  dataKey="value"
+                  label={({ percent }) => `${(percent * 100).toFixed(1)}%`}
+                >
+                  {hardcodedPieData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={PIE_COLORS[index % PIE_COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+            </div>
+
+            <div className="rounded-lg bg-white shadow-sm">
+              <h3 className="text- font-semibold text-center text-gray-700 px-6 py-4 mb-4 border-b border-gray-400">
+                New Feedback
+              </h3>
+              <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={hardcodedDonutData}
+                  innerRadius="60%"
+                  outerRadius="80%"
+                  dataKey="value"
+                  label={({ percent }) => `${(percent * 100).toFixed(1)}%`}
+                >
+                  {hardcodedDonutData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={DONUT_COLORS[index % DONUT_COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+              {/* <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie
+                    data={donutData}
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {donutData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={DONUT_COLORS[index % DONUT_COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer> */}
+            </div>
+
+            <div className="rounded-lg bg-white shadow-sm">
+              <h3 className="text- font-semibold text-center text-gray-700 px-6 py-4 mb-4 border-b border-gray-400">
                 Today Profit
               </h3>
-              <ResponsiveContainer width="100%" height={200}>
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={PIE_COLORS[index % PIE_COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-
-            <div className="rounded-lg bg-white shadow-sm">
-              <h3 className="text- font-semibold text-gray-700 px-6 py-4 mb-4 border-b border-gray-400">
-                Donut Chart
-              </h3>
-              <ResponsiveContainer width="100%" height={200}>
+              <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={hardcodedPieData}
+                  outerRadius="80%"
+                  dataKey="value"
+                  label={({ percent }) => `${(percent * 100).toFixed(1)}%`}
+                >
+                  {hardcodedPieData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={PIE_COLORS[index % PIE_COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+              {/* <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
                   <Pie
                     data={donutData}
@@ -192,57 +297,10 @@ const Dashboard = () => {
                     ))}
                   </Pie>
                 </PieChart>
-              </ResponsiveContainer>
+              </ResponsiveContainer> */}
             </div>
-
-            <div className="rounded-lg bg-white shadow-sm">
-              <h3 className="text- font-semibold text-gray-700 px-6 py-4 mb-4 border-b border-gray-400">
-                Donut Chart
-              </h3>
-              <ResponsiveContainer width="100%" height={200}>
-                <PieChart>
-                  <Pie
-                    data={donutData}
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {donutData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={DONUT_COLORS[index % DONUT_COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-
-            <div className="rounded-lg bg-white shadow-sm">
-              <h3 className="text- font-semibold text-gray-700 px-6 py-4 mb-4 border-b border-gray-400">
-                Donut Chart
-              </h3>
-              <ResponsiveContainer width="100%" height={200}>
-                <PieChart>
-                  <Pie
-                    data={donutData}
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {donutData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={DONUT_COLORS[index % DONUT_COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </section>
+          </div>
+       </section>
         </section>
       </main>
     </div>

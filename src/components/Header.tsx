@@ -24,13 +24,13 @@ const Header = () => (
           <span className="text-2xl font-normal text-[#1A1D1F]">tabler</span>
         </div>
         <div className="flex items-center space-x-4">
-          <button className="bg-blue-50 border border-blue-600 font-semibold text-blue-600 px-4 py-2 rounded">
+          <button className="bg-blue-50 border border-blue-600 text-xs font-semibold text-blue-600 px-4 py-2 rounded">
             Source code
           </button>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="27"
-            height="27"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="#000000"
@@ -47,10 +47,10 @@ const Header = () => (
               alt=""
             ></img>
             <div className="text-sm">
-              <div className="font-semibold text-gray-900 text-lg">
+              <div className="font-semibold text-gray-900 text-">
                 Jane Pearson
               </div>
-              <div>Administrator</div>
+              <div className="text-xs text-gray-400">Administrator</div>
             </div>
           </div>
         </div>
