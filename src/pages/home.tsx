@@ -405,3 +405,81 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDashboardData } from "../store/dashboardSlice";
+import { RootState } from "../store/store";
+import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
+
+const DONUT_COLORS = ["#4CAF50", "#E8F5E9"];
+const PIE_COLORS = ["#1E40AF", "#3B82F6", "#93C5FD", "#DBEAFE"];
+
+const Dashboard = () => {
+  const dispatch = useDispatch();
+  const { stats, tableData, donutData, pieData, loading } = useSelector((state: RootState) => state.dashboard);
+
+  useEffect(() => {
+    dispatch(fetchDashboardData());
+  }, [dispatch]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="min-h-screen bg-[#F8F9FA]">
+      <header className="bg-white border-b p-4">
+        <h1 className="text-2xl text-gray-800 font-medium mb-6">Dashboard</h1>
+      </header>
+
+      <main className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-6">
+          {stats.map((stat, index) => (
+            <div key={index} className="bg-white text-gray-900 p-6 rounded-lg shadow-sm">
+              <div className="text-3xl font-semibold mb-2">
+                {stat.suffix}
+                {stat.value}
+              </div>
+              <div className="text-gray-500 font-medium text-sm">{stat.title}</div>
+            </div>
+          ))}
+        </div>
+
+        <section className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
+          <div className="rounded-lg bg-white p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-700 mb-4 border-b border-gray-400">Development Activity</h3>
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart data={tableData}>
+                <Line type="monotone" dataKey="value" stroke="#3B82F6" strokeWidth={2} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="rounded-lg bg-white p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-700 mb-4 border-b border-gray-400">Today Profit</h3>
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie data={pieData} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
+                  {pieData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+};
+
+export default Dashboard;
